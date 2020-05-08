@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import {Route, Link} from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import NoteList from './NoteList/NoteList';
 import NotePage from './NotePage/NotePage';
-import store from './store'
+// import store from './store'
 import './App.css';
 import NoteListSidebar from './NoteListSidebar/NoteListSidebar';
-import { findNote, findFolder, getNotesforFolder } from './notes-helpers/notes-helpers';
 import NotePageSidebar from './NotePageSidebar/NotePageSidebar';
+import NotesContext from './NotesContext'
 
 
 
@@ -17,12 +17,33 @@ class App extends Component {
   };
 
   componentDidMount() {
-    // fake date loading from API call
-    setTimeout(() => this.setState(store), 600);
+    Promise.all([
+      fetch('http://localhost:9090/notes'),
+      fetch('http://localhost:9090/folders')
+    ])
+      .then(([notesRes, foldersRes]) => {
+        if(!notesRes.ok)
+          return notesRes.json().then(e => Promise.reject(e));
+        if(!foldersRes.ok)
+          return foldersRes.json().then(e => Promise.reject(e));
+
+        return Promise.all([notesRes.json(), foldersRes.json()]);
+      })
+      .then(([notes, folders]) => {
+        this.setState({notes, folders})
+      })
+      .catch(error => {
+        console.error({error});
+      });
   }
+
+  handleDeleteNote = noteId => {
+    this.setState({
+      notes: this.state.notes.filter(note => note.id !== noteId)
+    });
+  };
   
   renderNavRoutes() {
-    const { notes, folders } = this.state;
 
     return (
       //fragment
@@ -32,23 +53,13 @@ class App extends Component {
             exact
             key={path}
             path={path}
-            render={routeProps => (
-              <NoteListSidebar 
-                folders={folders}
-                notes={notes}
-                {...routeProps}
-              />
-            )}
+            //change to component. No need for state or render routeProps
+            component={NoteListSidebar}
           />
         ))}
         <Route 
           path="/note/:noteId"
-          render={routeProps => {
-            const { noteId } = routeProps.match.params;
-            const note = findNote(notes, noteId) || {};
-            const folder = findFolder(folders, note.folderId);
-            return <NotePageSidebar {...routeProps} folder={folder} />;
-          }}
+          component={NotePageSidebar}
         />
         <Route path="/add-folder" component={NotePageSidebar} />
         <Route path="/add-note" component={NotePageSidebar} />
@@ -57,7 +68,7 @@ class App extends Component {
   }
 
   renderMainRoutes() {
-    const { notes, folders } = this.state;
+    
     return (
       <>
         {['/', '/folder/:folderId'].map(path => (
@@ -65,48 +76,41 @@ class App extends Component {
             exact
             key={path}
             path={path}
-            render={routeProps => {
-              const { folderId } = routeProps.match.params;
-              const notesForFolder = getNotesforFolder(
-                notes,
-                folderId
-              );
-              return (
-                <NoteList 
-                  {...routeProps}
-                  notes={notesForFolder}
-                />
-              );
-            }}
+            //change to component. No need for state or render routeProps
+            component={NoteList}
           />
         ))}
         <Route 
           path="/note/:noteId"
-          render={routeProps => {
-            const { noteId } = routeProps.match.params;  
-            const note = findNote(notes, noteId);        
-            return <NotePage {...routeProps} note={note} />;
-          }}
+          component={NotePage}
         />
       </>
     );
   }
 
   render () {
+
+    const contextValue = {
+      notes: this.state.notes,
+      folders: this.state.folders,
+      deleteNote: this.handleDeleteNote,
+    }
     return (
-      <div className="App">
-        <nav className="App__nav">
-          {this.renderNavRoutes()}
-        </nav>
-        <header className="App__header">
-          <h1>
-            <Link to="/">Noteful</Link>
-          </h1>
-        </header>
-        <main className="App__main">
-          {this.renderMainRoutes()}
-        </main>
-      </div>
+      <NotesContext.Provider value={contextValue}>
+        <div className="App">
+          <nav className="App__nav">
+            {this.renderNavRoutes()}
+          </nav>
+          <header className="App__header">
+            <h1>
+              <Link to="/">Noteful</Link>
+            </h1>
+          </header>
+          <main className="App__main">
+            {this.renderMainRoutes()}
+          </main>
+        </div>
+      </NotesContext.Provider>
     );
   }
   

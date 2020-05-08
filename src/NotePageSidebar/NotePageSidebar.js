@@ -1,27 +1,42 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { findNote, findFolder } from '../notes-helpers/notes-helpers';
+import NotesContext from '../NotesContext';
 
-export default function NotePageSidebar(props) {
-    return (
-        <div className='NotePageSidebar'>
-            <button
-                type='button'
-                onClick={() => props.history.goBack()}
-                className='NotePageSidebar__back-button'
-            >
-                Back
-            </button>
+export default class NotePageSidebar extends Component {
+    static defaultProps = {
+        match: {
+            params: {}
+        },
+        history: {
+            goBack: () => {}
+        }
+    }
 
-            {props.folder && (
-                <h3 className='NotePageSidebar__folder-name'>
-                    {props.folder.name}
-                </h3>
-            )}
-        </div>
-    )
-}
+    static contextType = NotesContext;
 
-NotePageSidebar.defaultProps = {
-    history : {
-        goBack: () => {}
+    render() {
+
+        const { notes=[], folders=[] } = this.context;
+        const { noteId } = this.props.match.params;
+        const note = findNote(notes, noteId) || {};
+        const folder = findFolder(folders, note.folderId);
+
+        return (
+            <div className='NotePageSidebar'>
+                <button
+                    type='button'
+                    onClick={() => this.props.history.goBack()}
+                    className='NotePageSidebar__back-button'
+                >
+                    Back
+                </button>
+
+                {folder && (
+                    <h3 className='NotePageSidebar__folder-name'>
+                        {folder.name}
+                    </h3>
+                )}
+            </div>
+        )
     }
 }
