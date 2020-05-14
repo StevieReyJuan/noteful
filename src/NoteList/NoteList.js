@@ -2,14 +2,29 @@ import React, { Component } from 'react';
 import Note from '../Note/Note';
 import NotesContext from '../NotesContext';
 import { getNotesforFolder } from '../notes-helpers/notes-helpers'
+import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types';
 
 export default class NoteList extends Component {
     static defaultProps = {
         match: {
             params: {}
-        }
+        },
+        notes: []
     }
+    
     static contextType = NotesContext
+
+    static propTypes = {
+        notes: PropTypes.arrayOf(PropTypes.shape({
+            content: PropTypes.string,
+            folderId: PropTypes.string,
+            id: PropTypes.string,
+            modified: PropTypes.string,
+            name: PropTypes.string
+        })),
+        folderId: PropTypes.string
+    }
 
     render() {
         const { folderId } = this.props.match.params
@@ -29,7 +44,9 @@ export default class NoteList extends Component {
                     )}
                 </ul>
                 <div className='NoteList__button-container'>
-                    <button className='AddNote' type='button'>Add Note</button>
+                    <Link to='/add-note'>
+                        <button className='AddNote' type='button'>Add Note</button>
+                    </Link> 
                 </div>
             </section>
         );

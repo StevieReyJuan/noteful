@@ -2,18 +2,22 @@ import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
 import NoteList from './NoteList/NoteList';
 import NotePage from './NotePage/NotePage';
-// import store from './store'
 import './App.css';
 import NoteListSidebar from './NoteListSidebar/NoteListSidebar';
 import NotePageSidebar from './NotePageSidebar/NotePageSidebar';
-import NotesContext from './NotesContext'
+import NotesContext from './NotesContext';
+import AddFolder from './AddFolder/AddFolder';
+import AddNote from './AddNote/AddNote';
+import FolderError from './ErrorBoundaries/FolderError';
+import NoteError from './ErrorBoundaries/NoteError';
 
 
 
 class App extends Component {
   state = {
     notes: [],
-    folders: []
+    folders: [],
+    error: null
   };
 
   componentDidMount() {
@@ -33,15 +37,30 @@ class App extends Component {
         this.setState({notes, folders})
       })
       .catch(error => {
-        console.error({error});
+        console.log(error);
+        this.setState({ error });
       });
   }
 
   handleDeleteNote = noteId => {
     this.setState({
+      // set state of notes array with new array consisting of 
+      // any note.id in notes array that does not match argument of noteId
       notes: this.state.notes.filter(note => note.id !== noteId)
     });
   };
+
+  handleAddFolder = folder => {
+    this.setState({
+      folders: [ ...this.state.folders, folder]
+    })
+  }
+
+  handleAddNote = note => {
+    this.setState({
+      notes: [ ...this.state.notes, note]
+    })
+  }
   
   renderNavRoutes() {
 
@@ -49,11 +68,11 @@ class App extends Component {
       //fragment
       <>
         {['/', '/folder/:folderId'].map(path => (
+          // make a <Route> for '/' and a dynamic route for '/:folderId' 
           <Route
             exact
             key={path}
             path={path}
-            //change to component. No need for state or render routeProps
             component={NoteListSidebar}
           />
         ))}
@@ -61,8 +80,9 @@ class App extends Component {
           path="/note/:noteId"
           component={NotePageSidebar}
         />
-        <Route path="/add-folder" component={NotePageSidebar} />
-        <Route path="/add-note" component={NotePageSidebar} />
+
+        <Route path="/add-folder" component={AddFolder} />
+        <Route path="/add-note" component={AddNote} />
       </>  
     );
   }
@@ -72,11 +92,11 @@ class App extends Component {
     return (
       <>
         {['/', '/folder/:folderId'].map(path => (
+          // make a <Route> for '/' and a dynamic route for '/:folderId' 
           <Route 
             exact
             key={path}
             path={path}
-            //change to component. No need for state or render routeProps
             component={NoteList}
           />
         ))}
@@ -89,26 +109,35 @@ class App extends Component {
   }
 
   render () {
-
     const contextValue = {
       notes: this.state.notes,
       folders: this.state.folders,
       deleteNote: this.handleDeleteNote,
+      addNote: this.handleAddNote,
+      addFolder: this.handleAddFolder,
+      fetchError: this.state.error
     }
+    // if (this.state.error) {
+    //   return (<h2>Unable to connect to the server. Please try again.</h2>)
+    // }
     return (
       <NotesContext.Provider value={contextValue}>
         <div className="App">
-          <nav className="App__nav">
-            {this.renderNavRoutes()}
-          </nav>
-          <header className="App__header">
-            <h1>
-              <Link to="/">Noteful</Link>
-            </h1>
-          </header>
-          <main className="App__main">
-            {this.renderMainRoutes()}
-          </main>
+          <FolderError>
+            <nav className="App__nav">
+              {this.renderNavRoutes()}
+            </nav>
+          </FolderError>
+            <header className="App__header">
+              <h1>
+                <Link to="/">Noteful</Link>
+              </h1>
+            </header>
+          <NoteError>
+            <main className="App__main">
+              {this.renderMainRoutes()}
+            </main>
+          </NoteError>
         </div>
       </NotesContext.Provider>
     );
