@@ -8,24 +8,24 @@ export default class NoteListSidebar extends Component {
 
     static contextType = NotesContext;
 
-    static defaultProps = {
-        notes: [],
-        folders: []
-    }
+    // static defaultProps = {
+    //     notes: [],
+    //     folders: []
+    // }
 
-    static propTypes = {
-        notes: PropTypes.arrayOf(PropTypes.shape({
-            content: PropTypes.string,
-            folderId: PropTypes.string,
-            id: PropTypes.string,
-            modified: PropTypes.string,
-            name: PropTypes.string
-        })),
-        folders: PropTypes.arrayOf(PropTypes.shape({
-            id: PropTypes.string,
-            name: PropTypes.string
-        })),
-    }
+    // static propTypes = {
+    //     notes: PropTypes.arrayOf(PropTypes.shape({
+    //         content: PropTypes.string,
+    //         folderId: PropTypes.string,
+    //         id: PropTypes.string,
+    //         modified: PropTypes.string,
+    //         name: PropTypes.string
+    //     })),
+    //     folders: PropTypes.arrayOf(PropTypes.shape({
+    //         id: PropTypes.string,
+    //         name: PropTypes.string
+    //     })),
+    // }
 
     render() {
 
@@ -56,4 +56,23 @@ export default class NoteListSidebar extends Component {
             </div>
         );
     }
+}
+
+NoteListSidebar.defaultProps = {
+    notes: [],
+    folders: []
+}
+
+NoteListSidebar.propTypes = {
+    notes: PropTypes.arrayOf(PropTypes.shape({
+        content: PropTypes.string,
+        folderId: PropTypes.string,
+        id: PropTypes.string,
+        modified: PropTypes.string,
+        name: PropTypes.string
+    })),
+    folders: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string,
+        name: PropTypes.string
+    })),
 }

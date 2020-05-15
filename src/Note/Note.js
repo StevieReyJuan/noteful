@@ -5,16 +5,17 @@ import NotesContext from '../NotesContext';
 import PropTypes from 'prop-types';
 
 export default class Note extends Component {
-    static defaultProps = {
-        onDeleteNote: () => {}
-    }
+    
+    // static defaultProps = {
+    //     onDeleteNote: () => {}
+    // }
 
-    static propTypes = {
-        id: PropTypes.string,
-        name: PropTypes.string,
-        modified: PropTypes.string,
-        onDeleteNote: PropTypes.func
-    }
+    // static propTypes = {
+    //     id: PropTypes.string,
+    //     name: PropTypes.string,
+    //     modified: PropTypes.string,
+    //     onDeleteNote: PropTypes.func
+    // }
 
     static contextType = NotesContext;
 
@@ -68,4 +69,15 @@ export default class Note extends Component {
             </div>
         );
     }
+}
+
+Note.defaultProps = {
+    onDeleteNote: () => {}
+}
+
+Note.propTypes = {
+    id: PropTypes.string,
+    name: PropTypes.string,
+    modified: PropTypes.string,
+    onDeleteNote: PropTypes.func
 }

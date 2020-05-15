@@ -5,22 +5,23 @@ import NotesContext from '../NotesContext';
 import PropTypes from 'prop-types';
 
 export default class NotePage extends Component {
-    static defaultProps = {
-        match: {
-            params: {}
-        } 
-    }
 
-    static propTypes = {
-        notes: PropTypes.arrayOf(PropTypes.shape({
-            content: PropTypes.string,
-            folderId: PropTypes.string,
-            id: PropTypes.string,
-            modified: PropTypes.string,
-            name: PropTypes.string
-        })),
-        noteId: PropTypes.string
-    }
+    // static defaultProps = {
+    //     match: {
+    //         params: {}
+    //     } 
+    // }
+
+    // static propTypes = {
+    //     notes: PropTypes.arrayOf(PropTypes.shape({
+    //         content: PropTypes.string,
+    //         folderId: PropTypes.string,
+    //         id: PropTypes.string,
+    //         modified: PropTypes.string,
+    //         name: PropTypes.string
+    //     })),
+    //     noteId: PropTypes.string
+    // }
 
     static contextType = NotesContext;
 
@@ -49,4 +50,21 @@ export default class NotePage extends Component {
             </section>
         );
     }
+}
+
+NotePage.defaultProps = {
+    match: {
+        params: {}
+    } 
+}
+
+NotePage.propTypes = {
+    notes: PropTypes.arrayOf(PropTypes.shape({
+        content: PropTypes.string,
+        folderId: PropTypes.string,
+        id: PropTypes.string,
+        modified: PropTypes.string,
+        name: PropTypes.string
+    })),
+    noteId: PropTypes.string
 }

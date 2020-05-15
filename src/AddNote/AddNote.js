@@ -7,15 +7,15 @@ import PropTypes from 'prop-types';
 class AddNote extends Component {
     static contextType = NotesContext;
 
-    static defaultProps = {
-        history: {
-            goBack: () => {}
-        }
-    }
+    // static defaultProps = {
+    //     history: {
+    //         goBack: () => {}
+    //     }
+    // }
 
-    static propTypes = {
-        history: PropTypes.object
-    }
+    // static propTypes = {
+    //     history: PropTypes.object
+    // }
 
     constructor(props) {
         super(props);
@@ -23,7 +23,7 @@ class AddNote extends Component {
         this.state = {
             error: null,
             selectedFolderId: {
-                value: ''
+                value: 'b0715efe-ffaf-11e8-8eb2-f2801f1b9fd1'
             },
             noteTitle: {
                 value: ''
@@ -91,7 +91,7 @@ class AddNote extends Component {
 
     handleFolderSelection = folder => {
         this.setState({
-            selectedFolder: {value: folder}
+            selectedFolderId: {value: folder}
         })
     }
 
@@ -187,3 +187,13 @@ class AddNote extends Component {
 }
 
 export default AddNote;
+
+AddNote.defaultProps = {
+    history: {
+        goBack: () => {}
+    }
+}
+
+AddNote.propTypes = {
+    history: PropTypes.object
+}

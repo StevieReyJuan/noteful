@@ -4,30 +4,30 @@ import NotesContext from '../NotesContext';
 import PropTypes from 'prop-types';
 
 export default class NotePageSidebar extends Component {
-    static defaultProps = {
-        match: {
-            params: {}
-        },
-        history: {
-            goBack: () => {}
-        }
-    }
+    // static defaultProps = {
+    //     match: {
+    //         params: {}
+    //     },
+    //     history: {
+    //         goBack: () => {}
+    //     }
+    // }
 
-    static propTypes = {
-        notes: PropTypes.arrayOf(PropTypes.shape({
-            content: PropTypes.string,
-            folderId: PropTypes.string,
-            id: PropTypes.string,
-            modified: PropTypes.string,
-            name: PropTypes.string
-        })),
-        folders: PropTypes.arrayOf(PropTypes.shape({
-            id: PropTypes.string,
-            name: PropTypes.string
-        })),
-        noteId: PropTypes.string,
-        goBack: PropTypes.func
-    }
+    // static propTypes = {
+    //     notes: PropTypes.arrayOf(PropTypes.shape({
+    //         content: PropTypes.string,
+    //         folderId: PropTypes.string,
+    //         id: PropTypes.string,
+    //         modified: PropTypes.string,
+    //         name: PropTypes.string
+    //     })),
+    //     folders: PropTypes.arrayOf(PropTypes.shape({
+    //         id: PropTypes.string,
+    //         name: PropTypes.string
+    //     })),
+    //     noteId: PropTypes.string,
+    //     goBack: PropTypes.func
+    // }
 
     static contextType = NotesContext;
 
@@ -56,4 +56,29 @@ export default class NotePageSidebar extends Component {
             </div>
         )
     }
+}
+
+NotePageSidebar.defaultProps = {
+    match: {
+        params: {}
+    },
+    history: {
+        goBack: () => {}
+    }
+}
+
+NotePageSidebar.propTypes = {
+    notes: PropTypes.arrayOf(PropTypes.shape({
+        content: PropTypes.string,
+        folderId: PropTypes.string,
+        id: PropTypes.string,
+        modified: PropTypes.string,
+        name: PropTypes.string
+    })),
+    folders: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string,
+        name: PropTypes.string
+    })),
+    noteId: PropTypes.string,
+    goBack: PropTypes.func
 }

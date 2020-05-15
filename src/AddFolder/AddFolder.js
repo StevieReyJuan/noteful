@@ -7,15 +7,15 @@ import PropTypes from 'prop-types';
 class AddFolder extends Component {
     static contextType = NotesContext;
 
-    static defaultProps = {
-        history: {
-            goBack: () => {}
-        }
-    }
+    // static defaultProps = {
+    //     history: {
+    //         goBack: () => {}
+    //     }
+    // }
 
-    static propTypes = {
-        history: PropTypes.object
-    }
+    // static propTypes = {
+    //     history: PropTypes.object
+    // }
 
     constructor(props) {
         super(props);
@@ -127,3 +127,13 @@ class AddFolder extends Component {
 }
 
 export default AddFolder;
+
+AddFolder.defaultProps = {
+    history: {
+        goBack: () => {}
+    }
+}
+
+AddFolder.propTypes = {
+    history: PropTypes.object
+}

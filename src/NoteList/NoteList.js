@@ -6,25 +6,26 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
 
 export default class NoteList extends Component {
-    static defaultProps = {
-        match: {
-            params: {}
-        },
-        notes: []
-    }
-    
-    static contextType = NotesContext
 
-    static propTypes = {
-        notes: PropTypes.arrayOf(PropTypes.shape({
-            content: PropTypes.string,
-            folderId: PropTypes.string,
-            id: PropTypes.string,
-            modified: PropTypes.string,
-            name: PropTypes.string
-        })),
-        folderId: PropTypes.string
-    }
+    // static defaultProps = {
+    //     match: {
+    //         params: {}
+    //     },
+    //     notes: []
+    // }
+
+    // static propTypes = {
+    //     notes: PropTypes.arrayOf(PropTypes.shape({
+    //         content: PropTypes.string,
+    //         folderId: PropTypes.string,
+    //         id: PropTypes.string,
+    //         modified: PropTypes.string,
+    //         name: PropTypes.string
+    //     })),
+    //     folderId: PropTypes.string
+    // }
+
+    static contextType = NotesContext
 
     render() {
         const { folderId } = this.props.match.params
@@ -51,4 +52,22 @@ export default class NoteList extends Component {
             </section>
         );
     }
+}
+
+NoteList.defaultProps = {
+    match: {
+        params: {}
+    },
+    notes: []
+}
+
+NoteList.propTypes = {
+    notes: PropTypes.arrayOf(PropTypes.shape({
+        content: PropTypes.string,
+        folderId: PropTypes.string,
+        id: PropTypes.string,
+        modified: PropTypes.string,
+        name: PropTypes.string
+    })),
+    folderId: PropTypes.string
 }
