@@ -131,6 +131,7 @@ class AddNote extends Component {
                         <select 
                             id='folder'
                             name='folder'
+                            aria-name='select folder'
                             onChange={e => this.handleFolderSelection(e.target.value)}
                         >
                             {folders.map(option => (
@@ -149,6 +150,8 @@ class AddNote extends Component {
                             type='text'
                             name='title'
                             id='title'
+                            aria-label='note title'
+                            aria-required='true'
                             placeholder='My New Note'
                             onChange={e => this.handleNoteTitleUpdate(e.target.value)}
                             required
@@ -159,6 +162,8 @@ class AddNote extends Component {
                         <textarea 
                             name='content'
                             id='content'
+                            aria-label='note content'
+                            aria-required='true'
                             placeholder='Type your note here'
                             onChange={e => this.handleNoteContentUpdate(e.target.value)}
                             required

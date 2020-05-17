@@ -99,6 +99,8 @@ class AddFolder extends Component {
                             type='text'
                             name='name'
                             id='name'
+                            aria-label='folder-name'
+                            aria-required='true'
                             placeholder='My New Folder'
                             onChange={e => this.handleFolderNameUpdate(e.target.value)}
                             required
