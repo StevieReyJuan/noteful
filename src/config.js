@@ -1,3 +1,3 @@
 export default {
-  API_ENDPOINT: 'https://mysterious-garden-96231.herokuapp.com/'
+  API_ENDPOINT: 'https://mysterious-garden-96231.herokuapp.com'
 }
